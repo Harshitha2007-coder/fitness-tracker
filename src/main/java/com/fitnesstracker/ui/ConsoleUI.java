@@ -337,7 +337,17 @@ public class ConsoleUI {
         
         System.out.print("Calories burned (or press Enter to skip): ");
         String caloriesInput = scanner.nextLine().trim();
-        int calories = caloriesInput.isEmpty() ? estimateCalories(type, duration) : Integer.parseInt(caloriesInput);
+        int calories;
+        if (caloriesInput.isEmpty()) {
+            calories = estimateCalories(type, duration);
+        } else {
+            try {
+                calories = Integer.parseInt(caloriesInput);
+            } catch (NumberFormatException e) {
+                System.out.println("✗ Invalid calories. Using estimate instead.");
+                calories = estimateCalories(type, duration);
+            }
+        }
         
         System.out.println("Intensity (LOW, MEDIUM, HIGH): ");
         String intensity = scanner.nextLine().trim().toUpperCase();
@@ -410,15 +420,36 @@ public class ConsoleUI {
         
         System.out.print("Protein (g) [optional]: ");
         String proteinInput = scanner.nextLine().trim();
-        double protein = proteinInput.isEmpty() ? 0 : Double.parseDouble(proteinInput);
+        double protein = 0;
+        if (!proteinInput.isEmpty()) {
+            try {
+                protein = Double.parseDouble(proteinInput);
+            } catch (NumberFormatException e) {
+                System.out.println("✗ Invalid protein value. Setting to 0.");
+            }
+        }
         
         System.out.print("Carbs (g) [optional]: ");
         String carbsInput = scanner.nextLine().trim();
-        double carbs = carbsInput.isEmpty() ? 0 : Double.parseDouble(carbsInput);
+        double carbs = 0;
+        if (!carbsInput.isEmpty()) {
+            try {
+                carbs = Double.parseDouble(carbsInput);
+            } catch (NumberFormatException e) {
+                System.out.println("✗ Invalid carbs value. Setting to 0.");
+            }
+        }
         
         System.out.print("Fat (g) [optional]: ");
         String fatInput = scanner.nextLine().trim();
-        double fat = fatInput.isEmpty() ? 0 : Double.parseDouble(fatInput);
+        double fat = 0;
+        if (!fatInput.isEmpty()) {
+            try {
+                fat = Double.parseDouble(fatInput);
+            } catch (NumberFormatException e) {
+                System.out.println("✗ Invalid fat value. Setting to 0.");
+            }
+        }
         
         CalorieIntake intake = new CalorieIntake(currentUser.getId(), mealType, foodItem, calories, LocalDate.now());
         intake.setProteinG(protein);
@@ -455,15 +486,36 @@ public class ConsoleUI {
         
         System.out.print("Blood pressure systolic (optional, press Enter to skip): ");
         String bpSysInput = scanner.nextLine().trim();
-        Integer bpSys = bpSysInput.isEmpty() ? null : Integer.parseInt(bpSysInput);
+        Integer bpSys = null;
+        if (!bpSysInput.isEmpty()) {
+            try {
+                bpSys = Integer.parseInt(bpSysInput);
+            } catch (NumberFormatException e) {
+                System.out.println("✗ Invalid blood pressure systolic. Skipping.");
+            }
+        }
         
         System.out.print("Blood pressure diastolic (optional): ");
         String bpDiaInput = scanner.nextLine().trim();
-        Integer bpDia = bpDiaInput.isEmpty() ? null : Integer.parseInt(bpDiaInput);
+        Integer bpDia = null;
+        if (!bpDiaInput.isEmpty()) {
+            try {
+                bpDia = Integer.parseInt(bpDiaInput);
+            } catch (NumberFormatException e) {
+                System.out.println("✗ Invalid blood pressure diastolic. Skipping.");
+            }
+        }
         
         System.out.print("Resting heart rate (optional): ");
         String hrInput = scanner.nextLine().trim();
-        Integer hr = hrInput.isEmpty() ? null : Integer.parseInt(hrInput);
+        Integer hr = null;
+        if (!hrInput.isEmpty()) {
+            try {
+                hr = Integer.parseInt(hrInput);
+            } catch (NumberFormatException e) {
+                System.out.println("✗ Invalid heart rate. Skipping.");
+            }
+        }
         
         HealthMetrics metrics = bmiService.recordHealthMetrics(
             currentUser.getId(), weight, height, bpSys, bpDia, hr);

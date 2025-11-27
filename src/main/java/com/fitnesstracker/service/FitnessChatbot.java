@@ -365,7 +365,9 @@ public class FitnessChatbot {
             int remaining = steps.getGoalSteps() - steps.getStepCount();
             if (remaining > 0) {
                 info.append("📍 You need ").append(String.format("%,d", remaining)).append(" more steps to reach your goal.\n");
-                info.append("💡 That's about ").append(remaining / 100).append(" minutes of walking!");
+                // Average walking pace: ~100 steps per minute, minimum 1 minute
+                int minutes = Math.max(1, (int) Math.ceil(remaining / 100.0));
+                info.append("💡 That's about ").append(minutes).append(" minutes of walking!");
             } else {
                 info.append("🎉 Congratulations! You've reached your step goal for today!");
             }
